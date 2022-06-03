@@ -1,6 +1,10 @@
     /* cs152-miniL phase2 */
 %{
 #include <stdio.h>
+#include <vector.h>
+#include <string.h>
+
+extern int yylex(void);
 void yyerror(const char *msg);
 char* ident;
 int number;
