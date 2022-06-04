@@ -45,62 +45,84 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    FUNCTION = 258,
-    BEGIN_PARAMS = 259,
-    END_PARAMS = 260,
-    BEGIN_LOCALS = 261,
-    END_LOCALS = 262,
-    BEGIN_BODY = 263,
-    END_BODY = 264,
-    INTEGER = 265,
-    ARRAY = 266,
-    ENUM = 267,
-    OF = 268,
-    IF = 269,
-    THEN = 270,
-    ENDIF = 271,
-    ELSE = 272,
-    FOR = 273,
-    WHILE = 274,
-    DO = 275,
-    BEGIN_LOOP = 276,
-    END_LOOP = 277,
-    CONTINUE = 278,
-    READ = 279,
-    WRITE = 280,
-    AND = 281,
-    OR = 282,
-    NOT = 283,
-    TRUE = 284,
-    FALSE = 285,
-    RETURN = 286,
-    SUB = 287,
-    ADD = 288,
-    MULT = 289,
-    DIV = 290,
-    MOD = 291,
-    EQ = 292,
-    NEQ = 293,
-    LT = 294,
-    GT = 295,
-    LTE = 296,
-    GTE = 297,
-    SEMICOLON = 298,
-    COLON = 299,
-    COMMA = 300,
-    L_PAREN = 301,
-    R_PAREN = 302,
-    L_SQUARE_BRACKET = 303,
-    R_SQUARE_BRACKET = 304,
-    ASSIGN = 305,
-    NUMBER = 306,
-    IDENT = 307
+    DIGIT = 258,
+    IDENT = 259,
+    NUMBER = 260,
+    RETURN = 261,
+    FUNCTION = 262,
+    SEMICOLON = 263,
+    BEGIN_PARAMS = 264,
+    END_PARAMS = 265,
+    BEGIN_LOCALS = 266,
+    END_LOCALS = 267,
+    BEGIN_BODY = 268,
+    END_BODY = 269,
+    INTEGER = 270,
+    ARRAY = 271,
+    ENUM = 272,
+    OF = 273,
+    IF = 274,
+    THEN = 275,
+    ENDIF = 276,
+    ELSE = 277,
+    FOR = 278,
+    WHILE = 279,
+    DO = 280,
+    BEGIN_LOOP = 281,
+    END_LOOP = 282,
+    CONTINUE = 283,
+    READ = 284,
+    WRITE = 285,
+    AND = 286,
+    OR = 287,
+    NOT = 288,
+    TRUE = 289,
+    FALSE = 290,
+    COLON = 291,
+    COMMA = 292,
+    L_PAREN = 293,
+    R_PAREN = 294,
+    L_SQUARE_BRACKET = 295,
+    R_SQUARE_BRACKET = 296,
+    SUB = 297,
+    ADD = 298,
+    MULT = 299,
+    DIV = 300,
+    MOD = 301,
+    EQ = 302,
+    NEQ = 303,
+    LT = 304,
+    GT = 305,
+    LTE = 306,
+    GTE = 307,
+    ASSIGN = 308
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+
+union YYSTYPE
+{
+#line 35 "miniL.y" /* yacc.c:1909  */
+
+  int int_val;
+  char* ident;
+  float number;
+  
+  struct Statement{
+    char* code;
+  } statement;
+
+  struct Expression{
+    char* code;  
+  } expression;
+
+
+#line 123 "y.tab.h" /* yacc.c:1909  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

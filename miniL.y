@@ -4,6 +4,9 @@
 #include <vector>
 #include <string.h>
 #include <string>
+#include <map>
+#include <set>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -14,44 +17,47 @@ extern int currPos;
 map<string, string> varTemp;
 map<string,int> arrSize;
 bool mainFunc = false;
-set<string> = funcs;
-set<string> = reserved {"NUMBER", "IDENT", "RETURN", "FUNCTION", "SEMICOLON", "BEGIN_PARAMS", "END_PARAMS", "BEGIN_LOCALS", "END_LOCALS", "BEGIN_BODY", "END_BODY", "INTEGER", "ARRAY", "ENUM", "OF", "IF", "THEN", "ENDIF", "ELSE", "FOR", "WHILE", "DO", "BEGIN_LOOP", "END_LOOP", "CONTINUE", "READ", "WRTIE", "AND", "OR", "NOT", "TRUE", "FALSE", "RETURN", "NOT"}
 
 extern int yylex(void);
 void yyerror(const char *msg);
 char* ident;
 int number;
 
-string new_temp();
-string new_label();
-
-%union{
-  int int_val;
-  char* ident;
-  
-  struct S{
-    char* code;
-  } statement;
-
-}
-
-
 extern int currLine;
 extern int currPos;
 extern FILE * yyin;
 
+//string new_temp();
+//string new_label();
+
 %}
 
+%union{
+  int int_val;
+  char* ident;
+  float number;
+  
+  struct Statement{
+    char* code;
+  } statement;
+
+  struct Expression{
+    char* code;  
+  } expression;
+
+}
+
 %error-verbose
+%token<int_val> DIGIT
 %start prog_start
 %token <ident> IDENT
 %token <num> NUMBER
-%type <expression> function functions identifiers declaration declarations expression expressions multiple_expr
+%type <expression> function functions identifier identifiers declaration declarations expression expressions multiple_expr
 %type <expression> bool_expr relation_and_expr relation_expr term comp
 %type <statement> statement statements
 %token RETURN FUNCTION SEMICOLON BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY 
 %token INTEGER ARRAY ENUM OF IF THEN ENDIF ELSE FOR WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE
-%token AND OR NOT TRUE FALSE RETURN SEMICOLON COLON COMMA L_PAREN R_PARENT L_SQUARE BRACKET R_SQUARE_BRACKET
+%token AND OR NOT TRUE FALSE COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET
 %left SUB ADD MULT DIV MOD EQ NEQ LT GT LTE GTE ASSIGN
 %right NOT
 
@@ -61,7 +67,7 @@ prog_start:
 	functions
 		{printf("prog_start -> functions\n");};
 function:
-	FUNCTION identifier SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
+	FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
 		{printf("function -> FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY\n", ident);};
 functions:
 	/* Epsilon */
