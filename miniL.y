@@ -1,8 +1,11 @@
     /* cs152-miniL phase2 */
 %{
 #include <stdio.h>
-#include <vector.h>
+#include <vector>
 #include <string.h>
+#include <string>
+
+using namespace std;
 
 extern int yylex(void);
 void yyerror(const char *msg);
@@ -11,7 +14,13 @@ int number;
 
 extern int currLine;
 extern int currPos;
-FILE * yyin;
+extern FILE * yyin;
+
+struct function{
+	//std::string name;
+	//std::vector<Symbol> declarations;
+};
+
 %}
 
 %error-verbose
