@@ -7,74 +7,53 @@
 
 using namespace std;
 
+int tempCount = 0;
+int labelCount = 0;
+extern char* yytext;
+extern int currPos;
+map<string, string> varTemp;
+map<string,int> arrSize;
+bool mainFunc = false;
+set<string> = funcs;
+set<string> = reserved {"NUMBER", "IDENT", "RETURN", "FUNCTION", "SEMICOLON", "BEGIN_PARAMS", "END_PARAMS", "BEGIN_LOCALS", "END_LOCALS", "BEGIN_BODY", "END_BODY", "INTEGER", "ARRAY", "ENUM", "OF", "IF", "THEN", "ENDIF", "ELSE", "FOR", "WHILE", "DO", "BEGIN_LOOP", "END_LOOP", "CONTINUE", "READ", "WRTIE", "AND", "OR", "NOT", "TRUE", "FALSE", "RETURN", "NOT"}
+
 extern int yylex(void);
 void yyerror(const char *msg);
 char* ident;
 int number;
 
+string new_temp();
+string new_label();
+
+%union{
+  int int_val;
+  char* ident;
+  
+  struct S{
+    char* code;
+  } statement;
+
+}
+
+
 extern int currLine;
 extern int currPos;
 extern FILE * yyin;
-
-struct function{
-	//std::string name;
-	//std::vector<Symbol> declarations;
-};
 
 %}
 
 %error-verbose
 %start prog_start
-%token FUNCTION
-%token BEGIN_PARAMS
-%token END_PARAMS
-%token BEGIN_LOCALS
-%token END_LOCALS
-%token BEGIN_BODY
-%token END_BODY
-%token INTEGER
-%token ARRAY
-%token ENUM
-%token OF
-%token IF
-%token THEN
-%token ENDIF
-%token ELSE
-%token FOR
-%token WHILE
-%token DO
-%token BEGIN_LOOP
-%token END_LOOP
-%token CONTINUE
-%token READ
-%token WRITE
-%token AND
-%token OR
-%token NOT
-%token TRUE
-%token FALSE
-%token RETURN
-%token SUB
-%token ADD
-%token MULT
-%token DIV
-%token MOD
-%token EQ
-%token NEQ
-%token LT
-%token GT
-%token LTE
-%token GTE
-%token SEMICOLON
-%token COLON
-%token COMMA
-%token L_PAREN
-%token R_PAREN
-%token L_SQUARE_BRACKET
-%token R_SQUARE_BRACKET
-%token ASSIGN
-%token NUMBER
-%token IDENT
+%token <ident> IDENT
+%token <num> NUMBER
+%type <expression> function functions identifiers declaration declarations expression expressions multiple_expr
+%type <expression> bool_expr relation_and_expr relation_expr term comp
+%type <statement> statement statements
+%token RETURN FUNCTION SEMICOLON BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY 
+%token INTEGER ARRAY ENUM OF IF THEN ENDIF ELSE FOR WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE
+%token AND OR NOT TRUE FALSE RETURN SEMICOLON COLON COMMA L_PAREN R_PARENT L_SQUARE BRACKET R_SQUARE_BRACKET
+%left SUB ADD MULT DIV MOD EQ NEQ LT GT LTE GTE ASSIGN
+%right NOT
 
 %%
 
